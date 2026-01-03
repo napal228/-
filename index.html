@@ -3,109 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Share My Flex Message</title>
+    <title>Share Flex Message</title>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 </head>
-<body style="background-color: #f0f0f0; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;">
+<body style="text-align: center; padding-top: 50px; font-family: sans-serif; background-color: #f4f4f4;">
     
-    <div style="text-align: center; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-        <h2 id="status" style="color: #4A148C;">กำลังโหลด...</h2>
-        <p id="sub-status">กรุณารอสักครู่ ระบบกำลังเรียกใช้งาน LINE</p>
+    <div style="background: white; margin: 20px; padding: 30px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        <h2 id="status">กำลังเตรียมระบบ...</h2>
+        <p id="message">กรุณารอสักครู่</p>
+        <button id="btnShare" style="display: none; padding: 15px 30px; font-size: 18px; background-color: #00b900; color: white; border: none; border-radius: 10px; cursor: pointer; width: 100%; font-weight: bold;">
+            คลิกที่นี่เพื่อส่งข้อความ
+        </button>
     </div>
 
     <script>
-        async function sendFlex() {
+        async function main() {
             try {
-                // 1. เริ่มต้นใช้งาน LIFF ด้วย ID ของคุณ
+                // 1. เริ่มต้น LIFF (ใส่ ID ของคุณเรียบร้อย)
                 await liff.init({ liffId: "2008813632-xdaW53x5" });
 
                 if (!liff.isLoggedIn()) {
-                    // ถ้ายังไม่ได้ Login ให้เข้าสู่ระบบก่อน
                     liff.login();
                 } else {
-                    document.getElementById("status").innerText = "พร้อมส่งข้อความ";
-                    document.getElementById("sub-status").innerText = "กรุณาเลือกเพื่อนที่ต้องการส่งให้";
-                    
-                    // 2. คำสั่งเปิดหน้าจอเลือกเพื่อนเพื่อส่ง Flex Message
-                    const result = await liff.shareTargetPicker([
-                        {
-                            "type": "flex",
-                            "altText": "คุณได้รับข้อความใหม่",
-                            "contents": {
-                                "type": "carousel",
-                                "contents": [
-                                    {
-                                        "type": "bubble",
-                                        "body": {
-                                            "type": "box",
-                                            "layout": "vertical",
-                                            "contents": [
-                                                {
-                                                    "type": "image",
-                                                    "url": "https://img5.pic.in.th/file/secure-sv1/1-ezgif.com-gif-to-apng-converterb582f030842e9b4c.png",
-                                                    "size": "full",
-                                                    "animated": true,
-                                                    "aspectMode": "cover",
-                                                    "aspectRatio": "2.3:3",
-                                                    "offsetBottom": "none"
-                                                },
-                                                {
-                                                    "type": "button",
-                                                    "action": {
-                                                        "type": "uri",
-                                                        "uri": "http://linecorp.com/",
-                                                        "label": "    "
-                                                    },
-                                                    "position": "absolute",
-                                                    "offsetTop": "85%",
-                                                    "offsetEnd": "18%",
-                                                    "gravity": "bottom",
-                                                    "offsetStart": "15%",
-                                                    "offsetBottom": "10%"
-                                                }
-                                            ],
-                                            "borderWidth": "none",
-                                            "paddingAll": "none"
-                                        }
-                                    },
-                                    {
-                                        "type": "bubble",
-                                        "hero": {
-                                            "type": "image",
-                                            "url": "https://img2.pic.in.th/2-ezgif.com-gif-to-apng-converter.png",
-                                            "size": "full",
-                                            "aspectMode": "cover",
-                                            "aspectRatio": "2.9:3",
-                                            "animated": true
-                                        },
-                                        "body": {
-                                            "type": "box",
-                                            "layout": "vertical",
-                                            "backgroundColor": "#9370DB",
-                                            "contents": [
-                                                {
-                                                    "type": "text",
-                                                    "text": "The Ride of A Lifetime ",
-                                                    "weight": "bold",
-                                                    "size": "md",
-                                                    "color": "#4A148C",
-                                                    "wrap": true
-                                                },
-                                                {
-                                                    "type": "text",
-                                                    "text": "แนะนำโดย : ",
-                                                    "size": "sm",
-                                                    "color": "#6A1B9A",
-                                                    "wrap": true
-                                                }
-                                            ],
-                                            "cornerRadius": "none"
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    ]);
+                    // ระบบพร้อมทำงาน
+                    document.getElementById("status").innerText = "ระบบพร้อมแล้ว!";
+                    document.getElementById("message").innerText = "กดปุ่มด้านล่างเพื่อเลือกเพื่อนที่จะส่ง";
+                    document.getElementById("btnShare").style.display = "block";
 
-                    if (result) {
-                        // ส่งสำเร็จ
+                    // ตั้งค่าเมื่อคลิกปุ่ม
+                    document.getElementById("btnShare").onclick = async function() {
+                        const result = await liff.shareTargetPicker([
+                            {
+                                "type": "flex",
+                                "altText": "ส่ง Flex Message ให้คุณ",
+                                "contents": {
+                                    "type": "carousel",
+                                    "contents": [
+                                        {
+                                            "type": "bubble",
+                                            "body": {
+                                                "type": "box",
+                                                "layout": "vertical",
+                                                "contents": [
+                                                    {
+                                                        "type": "image",
+                                                        "url": "https://img5.pic.in.th/file/secure-sv1/1-ezgif.com-gif-to-apng-converterb582f030842e9b4c.png",
+                                                        "size": "full",
+                                                        "animated": true,
+                                                        "aspectMode": "cover",
+                                                        "aspectRatio": "2.3:3"
+                                                    },
+                                                    {
+                                                        "type": "button",
+                                                        "action": {
+                                                            "type": "uri",
+                                                            "uri": "http://linecorp.com/",
+                                                            "label": "    "
+                                                        },
+                                                        "position": "absolute",
+                                                        "offsetTop": "85%",
+                                                        "offsetEnd": "18%",
+                                                        "offsetStart": "15%"
+                                                    }
+                                                ],
+                                                "paddingAll": "none"
+                                            }
+                                        },
+                                        {
+                                            "type": "bubble",
+                                            "hero": {
+                                                "type": "image",
+                                                "url": "https://img2.pic.in.th/2-ezgif.com-gif-to-apng-converter.png",
+                                                "size": "full",
+                                                "aspectMode": "cover",
+                                                "aspectRatio": "2.9:3",
+                                                "animated": true
+                                            },
+                                            "body": {
+                                                "type": "box",
+                                                "layout": "vertical",
+                                                "backgroundColor": "#9370DB",
+                                                "contents": [
+                                                    {
+                                                        "type": "text",
+                                                        "text": "The Ride of A Lifetime ",
+                                                        "weight": "bold",
+                                                        "size": "md",
+                                                        "color": "#4A148C",
+                                                        "wrap": true
+                                                    },
+                                                    {
+                                                        "type": "text",
+                                                        "text": "แนะนำโดย : ",
+                                                        "size": "sm",
+                                                        "color": "#6A1B9A",
+                                                        "wrap": true
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]);
+
+                        if (result) {
+                            liff.closeWindow(); // ปิดหน้าต่างเมื่อส่งสำเร็จ
+                        }
+                    }
+                }
+            } catch (err) {
+                document.getElementById("status").innerText = "เกิดข้อผิดพลาด";
+                document.getElementById("message").innerText = err;
+            }
+        }
+        main();
+    </script>
+</body>
+</html>
