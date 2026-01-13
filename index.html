@@ -5,37 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Share Flex Message</title>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <style>
+        body {
+            background-color: #f4f4f4;
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 90%;
+        }
+        h2 { color: #4A148C; margin-bottom: 10px; }
+        p { color: #666; margin-bottom: 20px; }
+        #btnShare {
+            display: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #00b900;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        #btnShare:hover { background-color: #009e00; }
+    </style>
 </head>
-<body style="text-align: center; padding-top: 50px; font-family: sans-serif; background-color: #f4f4f4;">
-    
-    <div style="background: white; margin: 20px; padding: 30px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+<body>
+
+    <div class="container">
         <h2 id="status">กำลังเตรียมระบบ...</h2>
-        <p id="message">กรุณารอสักครู่</p>
-        <button id="btnShare" style="display: none; padding: 15px 30px; font-size: 18px; background-color: #00b900; color: white; border: none; border-radius: 10px; cursor: pointer; width: 100%; font-weight: bold;">
-            คลิกที่นี่เพื่อส่งข้อความ
-        </button>
+        <p id="message">กรุณารอสักครู่ ระบบกำลังเรียกใช้งาน LINE</p>
+        <button id="btnShare">คลิกที่นี่เพื่อส่งข้อความ</button>
     </div>
 
     <script>
         async function main() {
             try {
-                // 1. เริ่มต้น LIFF (ใส่ ID ของคุณเรียบร้อย)
+                // 1. เริ่มต้นใช้งาน LIFF (ใช้ ID เดิมของคุณ)
                 await liff.init({ liffId: "2008813632-xdaW53x5" });
 
                 if (!liff.isLoggedIn()) {
                     liff.login();
                 } else {
-                    // ระบบพร้อมทำงาน
+                    // เมื่อระบบพร้อม
                     document.getElementById("status").innerText = "ระบบพร้อมแล้ว!";
                     document.getElementById("message").innerText = "กดปุ่มด้านล่างเพื่อเลือกเพื่อนที่จะส่ง";
                     document.getElementById("btnShare").style.display = "block";
 
-                    // ตั้งค่าเมื่อคลิกปุ่ม
+                    // 2. ตั้งค่าการคลิกปุ่มเพื่อเปิด Share Target Picker
                     document.getElementById("btnShare").onclick = async function() {
                         const result = await liff.shareTargetPicker([
                             {
                                 "type": "flex",
-                                "altText": "ส่ง Flex Message ให้คุณ",
+                                "altText": "คุณได้รับ Flex Message ใหม่",
                                 "contents": {
                                     "type": "carousel",
                                     "contents": [
@@ -47,25 +81,29 @@
                                                 "contents": [
                                                     {
                                                         "type": "image",
-                                                        "url": "https://img5.pic.in.th/file/secure-sv1/1-ezgif.com-gif-to-apng-converterb582f030842e9b4c.png",
+                                                        "url": "https://img5.pic.in.th/file/secure-sv1/360x450px-ezgif.com-gif-to-apng-converter9d21deaf871ccb4c.png",
                                                         "size": "full",
                                                         "animated": true,
                                                         "aspectMode": "cover",
-                                                        "aspectRatio": "2.3:3"
+                                                        "aspectRatio": "2.3:3",
+                                                        "offsetBottom": "none"
                                                     },
                                                     {
                                                         "type": "button",
                                                         "action": {
                                                             "type": "uri",
-                                                            "uri": "http://linecorp.com/",
-                                                            "label": "    "
+                                                            "uri": "https://sites.google.com/view/lib-student2",
+                                                            "label": " "
                                                         },
                                                         "position": "absolute",
                                                         "offsetTop": "85%",
                                                         "offsetEnd": "18%",
-                                                        "offsetStart": "15%"
+                                                        "gravity": "bottom",
+                                                        "offsetStart": "15%",
+                                                        "offsetBottom": "10%"
                                                     }
                                                 ],
+                                                "borderWidth": "none",
                                                 "paddingAll": "none"
                                             }
                                         },
@@ -77,7 +115,12 @@
                                                 "size": "full",
                                                 "aspectMode": "cover",
                                                 "aspectRatio": "2.9:3",
-                                                "animated": true
+                                                "animated": true,
+                                                "action": {
+                                                    "type": "uri",
+                                                    "label": "action",
+                                                    "uri": "https://www.canva.com/design/DAG-RtBLz-M/TwboOx-ya67r4t1CsfzSWA/watch?utm_content=DAG-RtBLz-M&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hcd4c241121"
+                                                }
                                             },
                                             "body": {
                                                 "type": "box",
@@ -86,7 +129,7 @@
                                                 "contents": [
                                                     {
                                                         "type": "text",
-                                                        "text": "The Ride of A Lifetime ",
+                                                        "text": "The Ride Of A Lifetime Growing",
                                                         "weight": "bold",
                                                         "size": "md",
                                                         "color": "#4A148C",
@@ -94,12 +137,13 @@
                                                     },
                                                     {
                                                         "type": "text",
-                                                        "text": "แนะนำโดย : ",
+                                                        "text": "นตท.กฤศวรท ง. และ นตท.ภูรินท์ ร.",
                                                         "size": "sm",
                                                         "color": "#6A1B9A",
                                                         "wrap": true
                                                     }
-                                                ]
+                                                ],
+                                                "cornerRadius": "none"
                                             }
                                         }
                                     ]
@@ -108,9 +152,10 @@
                         ]);
 
                         if (result) {
-                            liff.closeWindow(); // ปิดหน้าต่างเมื่อส่งสำเร็จ
+                            // หากส่งสำเร็จ ให้ปิดหน้าต่าง LIFF
+                            liff.closeWindow();
                         }
-                    }
+                    };
                 }
             } catch (err) {
                 document.getElementById("status").innerText = "เกิดข้อผิดพลาด";
